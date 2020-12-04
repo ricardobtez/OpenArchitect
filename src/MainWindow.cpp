@@ -9,7 +9,7 @@ MainWindow::MainWindow() :
     m_box(Gtk::ORIENTATION_VERTICAL)
 {
     // Sets the title of the window. Property of the Gtk::Window super class
-    set_title(Glib::ustring("Application Title"));
+    set_title(Glib::ustring("Open Architect"));
     Glib::RefPtr< const Gdk::Screen > rRefScreen = get_screen();
     
     int width = rRefScreen->get_width() / 2;
@@ -24,11 +24,6 @@ MainWindow::MainWindow() :
     add_action("paste",
         sigc::mem_fun(*this, &MainWindow::on_menu_others));
 
-    //add_action("something",
-    //    sigc::mem_fun(*this, &MainWindow::on_menu_others));
-        
-    // choises memus, to demonstrate Radio Items,
-    // using our convenience methods for string and int radio values:
     m_refChoice = add_action("preferences",
         sigc::mem_fun(*this, &MainWindow::on_menu_preferences_options));
     m_refToggle = add_action_bool("sometoggle",

@@ -83,7 +83,7 @@ void MainApplication::on_startup(void)
     }
     else
     {
-      //set_app_menu(appMenu);
+      set_app_menu(appMenu);
       set_menubar(gmenu);
     }
 }

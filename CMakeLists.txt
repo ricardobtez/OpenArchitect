@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Set the project name to your project name, my project isn't very descriptive
-project(gtkmm-base CXX)
+project(OpenArchitect CXX)
 include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
 
@@ -32,9 +32,9 @@ set(AUX_SOURCE
     src/MainWindow.cpp
 )
 
-add_executable(sample src/main.cpp ${AUX_SOURCE})
-target_include_directories(sample PUBLIC ./ ${gtkmm-3.0_INCLUDE_DIRS})
+add_executable(OpenArchitect src/main.cpp ${AUX_SOURCE})
+target_include_directories(OpenArchitect PUBLIC ./ ${gtkmm-3.0_INCLUDE_DIRS})
 
 #${gtkmm-3.0_CFLAGS} ${gtkmm-3.0_CFLAGS_OTHER}
-target_link_libraries(sample PRIVATE project_warnings project_options ${gtkmm-3.0_LIBRARIES} ${gtkmm-3.0_CFLAGS})
+target_link_libraries(OpenArchitect PRIVATE project_warnings project_options ${gtkmm-3.0_LIBRARIES} ${gtkmm-3.0_CFLAGS})
 

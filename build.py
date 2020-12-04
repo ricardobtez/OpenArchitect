@@ -47,7 +47,7 @@ if __name__ == "__main__":
     with open('error_output.txt', 'w') as fileHandler:
         result = subprocess.run(makeCommand, stderr=fileHandler)
     os.chdir('../')
-    if (not os.path.exists('./compilation/sample')):
+    if (not os.path.exists('./compilation/OpenArchitect')):
         result .returncode = 69
         print("The executable was not created!")
     else:
