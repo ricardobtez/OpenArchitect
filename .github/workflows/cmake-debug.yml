@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run the python build script in the project
         shell: bash
-        working-directory: ${{runner.workspace}}/gtkmm-application
+        working-directory: ${{runner.workspace}}/OpenArchitect
         run: python3 build.py -b debug -f
         
   build:

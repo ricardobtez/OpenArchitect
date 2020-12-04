@@ -1,5 +1,5 @@
-![CMake-release](https://github.com/ricardobtez/gtkmm-application/workflows/CMake-release/badge.svg?branch=main&event=push)
-![CMake-debug](https://github.com/ricardobtez/gtkmm-application/workflows/CMake-debug/badge.svg?branch=main&event=push)
+![CMake-release](https://github.com/ricardobtez/OpenArchitect/workflows/CMake-release/badge.svg?branch=main&event=push)
+![CMake-debug](https://github.com/ricardobtez/OpenArchitect/workflows/CMake-debug/badge.svg?branch=main&event=push)
 
 <H1> gtmm-application </H1>
 <H3> Overview</H3>
