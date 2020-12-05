@@ -1,5 +1,8 @@
 #include <iostream>
+#include <gtkmm/menu.h>
+#include <gtkmm/action.h>
 #include "MainApplication.hpp"
+#include "MainApplicationMenu.hpp"
 #include "MainWindow.hpp"
 
 MainApplication::MainApplication(void) :
@@ -58,6 +61,19 @@ void MainApplication::on_startup(void)
 
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainApplication::on_menu_help_about));
+
+    Glib::RefPtr<Gtk::Action> newAction = Gtk::Action::create("app.new");
+    Glib::RefPtr<Gtk::Action> openAction = Gtk::Action::create("app.open");
+
+    Gtk::MenuItem fileNewMenuItem("_New");
+    Gtk::MenuItem fileOpenMenuItem("_Open");
+
+    fileNewMenuItem.set_related_action(newAction);
+    fileOpenMenuItem.set_related_action(openAction);
+
+    Gtk::Menu applicationMenu;
+    applicationMenu.append(fileNewMenuItem);
+    applicationMenu.append(fileOpenMenuItem);
 
     m_refBuilder = Gtk::Builder::create();
 
