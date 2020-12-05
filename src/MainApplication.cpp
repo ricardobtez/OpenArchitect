@@ -1,8 +1,6 @@
 #include <iostream>
-#include <gtkmm/menu.h>
-#include <gtkmm/action.h>
+#include <giomm/menu.h>
 #include "MainApplication.hpp"
-#include "MainApplicationMenu.hpp"
 #include "MainWindow.hpp"
 
 MainApplication::MainApplication(void) :
@@ -42,10 +40,28 @@ void MainApplication::on_startup(void)
 {
     // Call of the base class function
     Gtk::Application::on_startup();
-    
-    // Create actions for menus and toolbars.
-    // We can use add_action()because Gtk::Applicaiton derives from Gio::ActionMap
 
+    Glib::RefPtr<Gio::Menu> fileMenu = Gio::Menu::create();
+    fileMenu->append("_New Project", "app.new");
+    fileMenu->append("_Open Project", "app.open");
+    fileMenu->append("_Save Project", "app.save");
+    fileMenu->append("_Quit", "app.quit");
+
+
+    Glib::RefPtr<Gio::Menu> menuBar = Gio::Menu::create();
+    menuBar->insert_submenu(0, "_File", fileMenu);
+    menuBar->append("_Edit");
+
+    Glib::RefPtr<Gio::Menu> appMenu = Gio::Menu::create();
+    appMenu->insert_submenu(0, "_File", fileMenu);
+
+    set_accel_for_action("app.new",  "<Primary>n");
+    set_accel_for_action("app.open", "<Primary>o");
+    set_accel_for_action("app.save", "<Primary>s");
+    set_accel_for_action("app.quit", "<Primary>q");
+
+    // Create actions for menus and toolbars.
+    // We can use add_action()because Gtk::Application derives from Gio::ActionMap
     //File|New sub menu:
     add_action("new",
         sigc::mem_fun(*this, &MainApplication::on_menu_file_new));
@@ -62,46 +78,8 @@ void MainApplication::on_startup(void)
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainApplication::on_menu_help_about));
 
-    Glib::RefPtr<Gtk::Action> newAction = Gtk::Action::create("app.new");
-    Glib::RefPtr<Gtk::Action> openAction = Gtk::Action::create("app.open");
-
-    Gtk::MenuItem fileNewMenuItem("_New");
-    Gtk::MenuItem fileOpenMenuItem("_Open");
-
-    fileNewMenuItem.set_related_action(newAction);
-    fileOpenMenuItem.set_related_action(openAction);
-
-    Gtk::Menu applicationMenu;
-    applicationMenu.append(fileNewMenuItem);
-    applicationMenu.append(fileOpenMenuItem);
-
-    m_refBuilder = Gtk::Builder::create();
-
-    std::string builderFileName = "../src/BuilderFiles/MainApplication.xml";
-    try
-    {
-        m_refBuilder->add_from_file(builderFileName);
-    }
-    catch (const Glib::Error& ex)
-    {
-        std::cerr << "Building menus failed: " << ex.what();
-    }
-
-    // Get the menubar and the app menu, and add them to the application:
-    auto object = m_refBuilder->get_object("menu-example");
-    auto gmenu = Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-    object = m_refBuilder->get_object("appmenu");
-    auto appMenu = Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-
-    if (!(gmenu && appMenu))
-    {
-        std::cout << "GMenu or AppMenu not found\n";
-    }
-    else
-    {
-      set_app_menu(appMenu);
-      set_menubar(gmenu);
-    }
+    set_app_menu(appMenu);
+    set_menubar(menuBar);
 }
 
 void MainApplication::on_activate(void)
