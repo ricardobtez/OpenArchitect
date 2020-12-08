@@ -31,6 +31,7 @@ MainWindow::MainWindow() :
         
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainWindow::on_menu_others));
+
     Gtk::ToolButton* newToolButton = new Gtk::ToolButton();
     newToolButton->set_icon_name("document-new"); // application-exit
     newToolButton->set_tooltip_text("New Project");
@@ -39,10 +40,19 @@ MainWindow::MainWindow() :
     newToolButton->set_homogeneous(true);
     newToolButton->set_expand(false);
 
+    Gtk::ToolButton* exitToolbarButton = new Gtk::ToolButton();
+    exitToolbarButton->set_icon_name("application-exit");
+    exitToolbarButton->set_tooltip_text("New Project");
+    exitToolbarButton->set_visible(true);
+    exitToolbarButton->set_can_focus(false);
+    exitToolbarButton->set_homogeneous(true);
+    exitToolbarButton->set_expand(false);
+
     Gtk::Toolbar* toolbar = new Gtk::Toolbar();
     toolbar->set_visible(true);
     toolbar->set_can_focus(false);
 
+    toolbar->insert(*exitToolbarButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_exit_button)));
     toolbar->insert(*newToolButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
     m_box.pack_start(*toolbar, Gtk::PACK_SHRINK);
@@ -63,6 +73,11 @@ void MainWindow::on_menu_others()
 void MainWindow::on_toolbar_new_button()
 {
     std::cout << "Toolbar|New button pressed" << std::endl;
+}
+
+void MainWindow::on_toolbar_exit_button()
+{
+    std::cout << "Toolbar|Exit button pressed" << std::endl;
 }
 
 void MainWindow::on_menu_choices_other(const int parameter)

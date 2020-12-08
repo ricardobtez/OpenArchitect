@@ -20,8 +20,6 @@ protected:
     // Child widgets
     Gtk::Box m_box;
 
-    Glib::RefPtr<Gtk::Builder> m_refBuilder;
-
     //Two sets of choices:
     Glib::RefPtr<Gio::SimpleAction> m_refChoice;
     Glib::RefPtr<Gio::SimpleAction> m_refChoiceOther;
@@ -30,6 +28,7 @@ protected:
 
 private:
     void on_toolbar_new_button(void);
+    void on_toolbar_exit_button(void);
 };
 
 #endif /* MAIN_WINDOW_H */

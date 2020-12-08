@@ -17,6 +17,7 @@ protected:
 
 private:
     void create_window(void);
+    void create_menu(void);
 
     void on_window_hide(Gtk::Window* window);
     void on_menu_file_open();
@@ -24,8 +25,6 @@ private:
     void on_menu_file_save();
     void on_menu_file_quit();
     void on_menu_help_about();
-
-    Glib::RefPtr<Gtk::Builder> m_refBuilder;
 };
 
 #endif /* MAIN_APPLICATION_H */
