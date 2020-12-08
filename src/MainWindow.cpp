@@ -1,7 +1,7 @@
 
 #include <iostream>
-#include <gtkmm/menuitem.h>
 #include <gtkmm/toolbar.h>
+#include <gtkmm/toolbutton.h>
 #include "MainWindow.hpp"
 
 MainWindow::MainWindow() :
@@ -25,37 +25,30 @@ MainWindow::MainWindow() :
         sigc::mem_fun(*this, &MainWindow::on_menu_others));
 
     m_refChoice = add_action("preferences",
-        sigc::mem_fun(*this, &MainWindow::on_menu_preferences_options));
+        sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button));
     m_refToggle = add_action_bool("sometoggle",
         sigc::mem_fun(*this, &MainWindow::on_menu_toggle), false);
         
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainWindow::on_menu_others));
+    Gtk::ToolButton* newToolButton = new Gtk::ToolButton();
+    newToolButton->set_icon_name("document-new"); // application-exit
+    newToolButton->set_tooltip_text("New Project");
+    newToolButton->set_visible(true);
+    newToolButton->set_can_focus(false);
+    newToolButton->set_homogeneous(true);
+    newToolButton->set_expand(false);
 
-    m_refBuilder = Gtk::Builder::create();
+    Gtk::Toolbar* toolbar = new Gtk::Toolbar();
+    toolbar->set_visible(true);
+    toolbar->set_can_focus(false);
 
-    std::string builderFilename = "../src/BuilderFiles/MainWindow.xml";
+    toolbar->insert(*newToolButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
-    try
-    {
-      m_refBuilder->add_from_file(builderFilename);
-    }
-    catch (const Glib::Error& ex)
-    {
-      std::cerr << "Building toolbar failed: " <<  ex.what();
-    }
-    
-    Gtk::Toolbar* toolbar = nullptr;
-    m_refBuilder->get_widget("toolbar", toolbar);
-    if (!toolbar)
-    {
-        std::cerr << "The toolbar does not exist\n";
-    }
-    else
-    {
-        m_box.pack_start(*toolbar, Gtk::PACK_SHRINK);
-    }
+    m_box.pack_start(*toolbar, Gtk::PACK_SHRINK);
+
 }
+
 MainWindow::~MainWindow(void)
 {
 
@@ -67,9 +60,9 @@ void MainWindow::on_menu_others()
     std::cout << "A menu item was selected." << std::endl;
 }
 
-void MainWindow::on_menu_preferences_options()
+void MainWindow::on_toolbar_new_button()
 {
-    std::cout << "Preferences|Options button pressed" << std::endl;
+    std::cout << "Toolbar|New button pressed" << std::endl;
 }
 
 void MainWindow::on_menu_choices_other(const int parameter)

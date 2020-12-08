@@ -9,7 +9,7 @@
 class MainWindow : public Gtk::ApplicationWindow
 {
 public:
-    MainWindow(void);
+    MainWindow();
     virtual ~MainWindow();
 protected:
     // Signal handlers
@@ -29,7 +29,7 @@ protected:
     Glib::RefPtr<Gio::SimpleAction> m_refToggle;
 
 private:
-    void on_menu_preferences_options(void);
+    void on_toolbar_new_button(void);
 };
 
 #endif /* MAIN_WINDOW_H */
