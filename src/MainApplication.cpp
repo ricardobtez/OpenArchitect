@@ -1,14 +1,13 @@
 #include <iostream>
 #include <giomm/menu.h>
+#include "MainAppActions.hpp"
 #include "MainApplication.hpp"
 #include "MainWindow.hpp"
 
 MainApplication::MainApplication(void) :
     Gtk::Application("gtkmm-application.com")
 {
-    //Glib::set_application_name("Main Menu Example");
 }
-
 
 Glib::RefPtr<MainApplication> MainApplication::create()
 {
@@ -36,29 +35,42 @@ void MainApplication::create_window(void)
     window->show_all();
 }
 
+void MainApplication::create_menu(void)
+{
+    Glib::RefPtr<Gio::Menu> appMenu = Gio::Menu::create();
+    Glib::RefPtr<Gio::Menu> menuBar = Gio::Menu::create();
+
+    /*set_accel_for_action("app.new",  "<Primary>n");
+    set_accel_for_action("app.open", "<Primary>o");
+    set_accel_for_action("app.save", "<Primary>s");
+    set_accel_for_action("app.quit", "<Primary>q");*/
+
+    // Creates all the Menus for the menu bar
+    for (auto menuElements: mainAppMenuElements)
+    {
+        Glib::RefPtr<Gio::Menu> currSubMenu = Gio::Menu::create();
+
+        for (auto submenu : menuElements.submenu)
+        {
+            currSubMenu->append(submenu.submenuLabel, submenu.action);
+        }
+
+        menuBar->insert_submenu(0, menuElements.menuText, currSubMenu);
+    }
+
+    for (auto acc : mainAppAccelerators)
+    {
+        set_accel_for_action(acc.action, acc.accelerator);
+    }
+
+    set_app_menu(appMenu);
+    set_menubar(menuBar);
+}
+
 void MainApplication::on_startup(void)
 {
     // Call of the base class function
     Gtk::Application::on_startup();
-
-    Glib::RefPtr<Gio::Menu> fileMenu = Gio::Menu::create();
-    fileMenu->append("_New Project", "app.new");
-    fileMenu->append("_Open Project", "app.open");
-    fileMenu->append("_Save Project", "app.save");
-    fileMenu->append("_Quit", "app.quit");
-
-
-    Glib::RefPtr<Gio::Menu> menuBar = Gio::Menu::create();
-    menuBar->insert_submenu(0, "_File", fileMenu);
-    menuBar->append("_Edit");
-
-    Glib::RefPtr<Gio::Menu> appMenu = Gio::Menu::create();
-    appMenu->insert_submenu(0, "_File", fileMenu);
-
-    set_accel_for_action("app.new",  "<Primary>n");
-    set_accel_for_action("app.open", "<Primary>o");
-    set_accel_for_action("app.save", "<Primary>s");
-    set_accel_for_action("app.quit", "<Primary>q");
 
     // Create actions for menus and toolbars.
     // We can use add_action()because Gtk::Application derives from Gio::ActionMap
@@ -77,9 +89,7 @@ void MainApplication::on_startup(void)
 
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainApplication::on_menu_help_about));
-
-    set_app_menu(appMenu);
-    set_menubar(menuBar);
+    create_menu();
 }
 
 void MainApplication::on_activate(void)
@@ -90,6 +100,7 @@ void MainApplication::on_activate(void)
 
 void MainApplication::on_window_hide(Gtk::Window* window)
 {
+    std::cout << "Deleting Window" <<std::endl;
     delete window;
 }
 
