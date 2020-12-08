@@ -36,6 +36,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    - uses: mstksg/get-package@v1
+        with:
+          apt-get: pkg-config libgtkmm-3.0-dev
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
