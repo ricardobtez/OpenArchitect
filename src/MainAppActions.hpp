@@ -76,3 +76,4 @@ const std::vector<tstAcceleratorActions> mainAppAccelerators =
     { "app.help", "<Primary>h" }
 };
 #endif /* MAINAPP_ACTIONS_H */
+

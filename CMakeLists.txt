@@ -30,6 +30,7 @@ endif()
 set(AUX_SOURCE
     src/MainApplication.cpp
     src/MainWindow.cpp
+    src/DisplayWindow.cpp
 )
 
 add_executable(OpenArchitect src/main.cpp ${AUX_SOURCE})

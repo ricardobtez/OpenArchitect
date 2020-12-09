@@ -59,6 +59,7 @@ void MainApplication::create_menu()
     }
     pos = 0;
 
+    // Creates the application menu
     for (auto menuElements : appMenuElements)
     {
         Glib::RefPtr<Gio::Menu> currSubMenu = Gio::Menu::create();
@@ -182,6 +183,4 @@ void MainApplication::on_menu_help_about()
 {
     std::cout << "Help|About was selected." << std::endl;
 }
-
-
 

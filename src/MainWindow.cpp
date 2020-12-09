@@ -3,10 +3,10 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/toolbutton.h>
 #include "MainWindow.hpp"
+#include "DisplayWindow.hpp"
 
 MainWindow::MainWindow() :
-    Gtk::ApplicationWindow(),
-    m_box(Gtk::ORIENTATION_VERTICAL)
+    Gtk::ApplicationWindow()
 {
     // Sets the title of the window. Property of the Gtk::Window super class
     set_title(Glib::ustring("Open Architect"));
@@ -16,7 +16,7 @@ MainWindow::MainWindow() :
     int heigth = rRefScreen->get_height() / 2;
     set_default_size(width, heigth);
 
-    add(m_box);
+    add(m_grid);
 
     add_action("copy",
         sigc::mem_fun(*this, &MainWindow::on_menu_others));
@@ -24,10 +24,6 @@ MainWindow::MainWindow() :
     add_action("paste",
         sigc::mem_fun(*this, &MainWindow::on_menu_others));
 
-    m_refChoice = add_action("preferences",
-        sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button));
-    m_refToggle = add_action_bool("sometoggle",
-        sigc::mem_fun(*this, &MainWindow::on_menu_toggle), false);
         
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainWindow::on_menu_others));
@@ -55,8 +51,11 @@ MainWindow::MainWindow() :
     toolbar->insert(*exitToolbarButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_exit_button)));
     toolbar->insert(*newToolButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
-    m_box.pack_start(*toolbar, Gtk::PACK_SHRINK);
+    DisplayWindow *display = new DisplayWindow();
+    display->show();
 
+    m_grid.attach(*toolbar, 0, 0);
+    m_grid.attach(*display, 1, 0);
 }
 
 MainWindow::~MainWindow(void)
@@ -79,41 +78,4 @@ void MainWindow::on_toolbar_exit_button()
 {
     std::cout << "Toolbar|Exit button pressed" << std::endl;
 }
-
-void MainWindow::on_menu_choices_other(const int parameter)
-{
-    //The radio action's state does not change automatically:
-    m_refChoice->change_state(parameter);
-
-    Glib::ustring message;
-    if (parameter == 1)
-        message = "Choice 1 was selected";
-    else
-        message = "Choice 2 was selected";
-
-    std::cout << message << std::endl;
-}
-
-void MainWindow::on_menu_toggle(void)
-{
-    bool active = false;
-    m_refToggle->get_state(active);
-
-    // The toggle action's state does not change automatically
-    active = !active;
-    m_refToggle->change_state(active);
-
-    Glib::ustring message;
-
-    if (active)
-        message = "Toggle is active";
-    else
-        message = "Toggle is inactive";
-
-    std::cout << message << std::endl;
-}
-
-
-
-
 
