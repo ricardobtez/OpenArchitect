@@ -1,4 +1,4 @@
-#ifndef MAIN_APPLICATION_Hsa
+#ifndef MAIN_APPLICATION_H
 #define MAIN_APPLICATION_H
 
 #include <gtkmm.h>
@@ -24,6 +24,10 @@ private:
     void on_menu_file_new();
     void on_menu_file_save();
     void on_menu_file_quit();
+    void on_menu_edit_copy();
+    void on_menu_edit_paste();
+    void on_menu_edit_cut();
+    void on_menu_edit_delete();
     void on_menu_help_about();
 };
 

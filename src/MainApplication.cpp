@@ -1,10 +1,11 @@
 #include <iostream>
-#include <giomm/menu.h>
+//#include <giomm/menu.h>
+//#include <gtkmm/separatormenuitem.h>
 #include "MainAppActions.hpp"
 #include "MainApplication.hpp"
 #include "MainWindow.hpp"
 
-MainApplication::MainApplication(void) :
+MainApplication::MainApplication() :
     Gtk::Application("gtkmm-application.com")
 {
 }
@@ -14,7 +15,7 @@ Glib::RefPtr<MainApplication> MainApplication::create()
     return Glib::RefPtr<MainApplication>(new MainApplication());
 }
 
-void MainApplication::create_window(void)
+void MainApplication::create_window()
 {
     auto window = new MainWindow();
     
@@ -35,27 +36,40 @@ void MainApplication::create_window(void)
     window->show_all();
 }
 
-void MainApplication::create_menu(void)
+void MainApplication::create_menu()
 {
     Glib::RefPtr<Gio::Menu> appMenu = Gio::Menu::create();
     Glib::RefPtr<Gio::Menu> menuBar = Gio::Menu::create();
-
-    /*set_accel_for_action("app.new",  "<Primary>n");
-    set_accel_for_action("app.open", "<Primary>o");
-    set_accel_for_action("app.save", "<Primary>s");
-    set_accel_for_action("app.quit", "<Primary>q");*/
+    int pos = 0;
 
     // Creates all the Menus for the menu bar
-    for (auto menuElements: mainAppMenuElements)
+    for (auto menuElements : mainMenuElements)
     {
         Glib::RefPtr<Gio::Menu> currSubMenu = Gio::Menu::create();
 
         for (auto submenu : menuElements.submenu)
         {
-            currSubMenu->append(submenu.submenuLabel, submenu.action);
+            if (submenu.submenuLabel != "" && submenu.action != "")
+                currSubMenu->append(submenu.submenuLabel, submenu.action);
+            //else
+            //    currSubMenu->append("", "");
         }
 
-        menuBar->insert_submenu(0, menuElements.menuText, currSubMenu);
+        menuBar->insert_submenu(pos++, menuElements.menuText, currSubMenu);
+    }
+    pos = 0;
+
+    for (auto menuElements : appMenuElements)
+    {
+        Glib::RefPtr<Gio::Menu> currSubMenu = Gio::Menu::create();
+
+        for (auto submenu : menuElements.submenu)
+        {
+            if (submenu.submenuLabel != "" && submenu.action != "")
+                currSubMenu->append(submenu.submenuLabel, submenu.action);
+        }
+
+        appMenu->insert_submenu(pos++, menuElements.menuText, currSubMenu);
     }
 
     for (auto acc : mainAppAccelerators)
@@ -67,7 +81,7 @@ void MainApplication::create_menu(void)
     set_menubar(menuBar);
 }
 
-void MainApplication::on_startup(void)
+void MainApplication::on_startup()
 {
     // Call of the base class function
     Gtk::Application::on_startup();
@@ -89,14 +103,22 @@ void MainApplication::on_startup(void)
 
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainApplication::on_menu_help_about));
+
+    add_action("copy", sigc::mem_fun(*this, &MainApplication::on_menu_edit_copy));
+
+    add_action("paste", sigc::mem_fun(*this, &MainApplication::on_menu_edit_paste));
+
+    add_action("cut", sigc::mem_fun(*this, &MainApplication::on_menu_edit_cut));
+
+    add_action("delete", sigc::mem_fun(*this, &MainApplication::on_menu_edit_delete));
+
     create_menu();
 }
 
-void MainApplication::on_activate(void)
+void MainApplication::on_activate()
 {
     create_window();
 }
-
 
 void MainApplication::on_window_hide(Gtk::Window* window)
 {
@@ -104,22 +126,22 @@ void MainApplication::on_window_hide(Gtk::Window* window)
     delete window;
 }
 
-void MainApplication::on_menu_file_new(void)
+void MainApplication::on_menu_file_new()
 {
     std::cout << "A File|New Item was selected\n";
 }
 
-void MainApplication::on_menu_file_open(void)
+void MainApplication::on_menu_file_open()
 {
     std::cout << "A File|Open Item was selected\n";
 }
 
-void MainApplication::on_menu_file_save(void)
+void MainApplication::on_menu_file_save()
 {
     std::cout << "A File|Save Item was selected\n";
 }
 
-void MainApplication::on_menu_file_quit(void)
+void MainApplication::on_menu_file_quit()
 {
     std::cout << G_STRFUNC << std::endl;
     quit();
@@ -136,9 +158,29 @@ void MainApplication::on_menu_file_quit(void)
         windows[0]->hide(); // In this simple case, we know there is only one window
 }
 
-void MainApplication::on_menu_help_about(void)
+void MainApplication::on_menu_edit_copy()
 {
-    std::cout << "App|Help|About was selected." << std::endl;
+    std::cout << "Edit|Copy selected" << std::endl;
+}
+
+void MainApplication::on_menu_edit_paste()
+{
+    std::cout << "Edit|Paste selected" << std::endl;
+}
+
+void MainApplication::on_menu_edit_cut()
+{
+    std::cout << "Edit|Cut selected" << std::endl;
+}
+
+void MainApplication::on_menu_edit_delete()
+{
+    std::cout << "Edit|Delete selected" << std::endl;
+}
+
+void MainApplication::on_menu_help_about()
+{
+    std::cout << "Help|About was selected." << std::endl;
 }
 
 
