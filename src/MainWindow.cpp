@@ -4,13 +4,13 @@
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/button.h>
-#include <gtkmm/notebook.h>
-#include <gtkmm/treeview.h>
 #include "MainWindow.hpp"
 #include "DisplayWindow.hpp"
 
 MainWindow::MainWindow() :
-    Gtk::ApplicationWindow()
+    Gtk::ApplicationWindow(),
+    m_currentPages(new Gtk::Notebook()),
+    m_projectView(new Gtk::TreeView())
 {
     // Sets the title of the window. Property of the Gtk::Window super class
     set_title(Glib::ustring("Open Architect"));
@@ -61,15 +61,13 @@ MainWindow::MainWindow() :
 
     DisplayWindow* display = new DisplayWindow(Gtk::ORIENTATION_HORIZONTAL);
     Gtk::Button* button = new Gtk::Button("Dummy button");
-    Gtk::Notebook* notebook = new Gtk::Notebook();
-    Gtk::TreeView* treeview = new Gtk::TreeView();
-    notebook->append_page(*display, "Display/Paned Window");
+    m_currentPages->append_page(*display, "Display/Paned Window");
     display->show();
 
     m_grid.attach(*toolbar, 0, 0, 1, 1);
     m_grid.attach(*button, 1, 0, 1, 1);
-    m_grid.attach(*treeview, 0, 1, 1, 1);
-    m_grid.attach(*notebook, 1, 1, 3, 3);
+    m_grid.attach(*m_projectView, 0, 1, 1, 1);
+    m_grid.attach(*m_currentPages, 1, 1, 3, 3);
 }
 
 MainWindow::~MainWindow(void)

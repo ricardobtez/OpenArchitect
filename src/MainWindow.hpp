@@ -3,7 +3,8 @@
 
 #include <gtkmm/applicationwindow.h>
 #include <gtkmm/grid.h>
-#include <gtkmm/builder.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/treeview.h>
 
 
 class MainWindow : public Gtk::ApplicationWindow
@@ -21,6 +22,9 @@ protected:
 private:
     void on_toolbar_new_button(void);
     void on_toolbar_exit_button(void);
+
+    Gtk::Notebook* m_currentPages;
+    Gtk::TreeView* m_projectView;
 };
 
 #endif /* MAIN_WINDOW_H */
