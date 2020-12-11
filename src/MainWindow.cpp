@@ -2,6 +2,7 @@
 #include <iostream>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/toolbutton.h>
+#include <gtkmm/drawingarea.h>
 #include "MainWindow.hpp"
 #include "DisplayWindow.hpp"
 
@@ -52,10 +53,12 @@ MainWindow::MainWindow() :
     toolbar->insert(*newToolButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
     DisplayWindow *display = new DisplayWindow();
+    Gtk::DrawingArea* drawingArea = new Gtk::DrawingArea();
+    display->add(*drawingArea);
     display->show();
 
-    m_grid.attach(*toolbar, 0, 0);
-    m_grid.attach(*display, 1, 0);
+    m_grid.attach(*toolbar, 0, 0, 100, 100);
+    m_grid.attach(*display, 1, 1, 100, 100);
 }
 
 MainWindow::~MainWindow(void)

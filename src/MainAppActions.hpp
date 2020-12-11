@@ -60,7 +60,7 @@ const std::vector<tstMenuData> mainMenuElements =
 
 const std::vector<tstMenuData> appMenuElements =
 {
-    { fileSubmenu, "_File" }
+    { fileSubmenu, "_Project" }
 };
 
 
