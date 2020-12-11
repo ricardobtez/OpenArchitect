@@ -1,7 +1,8 @@
 
 #include "DisplayWindow.hpp"
 
-DisplayWindow::DisplayWindow()
+DisplayWindow::DisplayWindow(const Gtk::Orientation orientation) :
+    Gtk::Paned(orientation)
 {
 
 }

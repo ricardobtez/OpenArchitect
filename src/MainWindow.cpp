@@ -2,7 +2,10 @@
 #include <iostream>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/toolbutton.h>
-#include <gtkmm/drawingarea.h>
+#include <gtkmm/paned.h>
+#include <gtkmm/button.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/treeview.h>
 #include "MainWindow.hpp"
 #include "DisplayWindow.hpp"
 
@@ -17,6 +20,7 @@ MainWindow::MainWindow() :
     int heigth = rRefScreen->get_height() / 2;
     set_default_size(width, heigth);
 
+    m_grid.set_column_homogeneous(true);
     add(m_grid);
 
     add_action("copy",
@@ -25,7 +29,6 @@ MainWindow::MainWindow() :
     add_action("paste",
         sigc::mem_fun(*this, &MainWindow::on_menu_others));
 
-        
     // Help menu
     add_action("about", sigc::mem_fun(*this, &MainWindow::on_menu_others));
 
@@ -49,16 +52,24 @@ MainWindow::MainWindow() :
     toolbar->set_visible(true);
     toolbar->set_can_focus(false);
 
-    toolbar->insert(*exitToolbarButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_exit_button)));
-    toolbar->insert(*newToolButton, 0, sigc::slot<void>(sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
+    toolbar->insert(*exitToolbarButton, 0,
+                    sigc::slot<void>(
+                        sigc::mem_fun(*this, &MainWindow::on_toolbar_exit_button)));
+    toolbar->insert(*newToolButton, 0,
+                    sigc::slot<void>(
+                        sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
-    DisplayWindow *display = new DisplayWindow();
-    Gtk::DrawingArea* drawingArea = new Gtk::DrawingArea();
-    display->add(*drawingArea);
+    DisplayWindow* display = new DisplayWindow(Gtk::ORIENTATION_HORIZONTAL);
+    Gtk::Button* button = new Gtk::Button("Dummy button");
+    Gtk::Notebook* notebook = new Gtk::Notebook();
+    Gtk::TreeView* treeview = new Gtk::TreeView();
+    notebook->append_page(*display, "Display/Paned Window");
     display->show();
 
-    m_grid.attach(*toolbar, 0, 0, 100, 100);
-    m_grid.attach(*display, 1, 1, 100, 100);
+    m_grid.attach(*toolbar, 0, 0, 1, 1);
+    m_grid.attach(*button, 1, 0, 1, 1);
+    m_grid.attach(*treeview, 0, 1, 1, 1);
+    m_grid.attach(*notebook, 1, 1, 3, 3);
 }
 
 MainWindow::~MainWindow(void)
