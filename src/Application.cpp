@@ -2,20 +2,20 @@
 //#include <giomm/menu.h>
 //#include <gtkmm/separatormenuitem.h>
 #include "MainAppActions.hpp"
-#include "MainApplication.hpp"
+#include "Application.hpp"
 #include "MainWindow.hpp"
 
-MainApplication::MainApplication() :
+Application::Application() :
     Gtk::Application("gtkmm-application.com")
 {
 }
 
-Glib::RefPtr<MainApplication> MainApplication::create()
+Glib::RefPtr<Application> Application::create()
 {
-    return Glib::RefPtr<MainApplication>(new MainApplication());
+    return Glib::RefPtr<Application>(new Application());
 }
 
-void MainApplication::create_window()
+void Application::create_window()
 {
     auto window = new MainWindow();
     
@@ -30,13 +30,13 @@ void MainApplication::create_window()
 
     // Delete the window when it is hidden.
     window->signal_hide().connect(sigc::bind<Gtk::Window*>(
-        sigc::mem_fun(*this, &MainApplication::on_window_hide), window));
+        sigc::mem_fun(*this, &Application::on_window_hide), window));
 
     // let's show a window.
     window->show_all();
 }
 
-void MainApplication::create_menu()
+void Application::create_menu()
 {
     Glib::RefPtr<Gio::Menu> appMenu = Gio::Menu::create();
     Glib::RefPtr<Gio::Menu> menuBar = Gio::Menu::create();
@@ -82,7 +82,7 @@ void MainApplication::create_menu()
     set_menubar(menuBar);
 }
 
-void MainApplication::on_startup()
+void Application::on_startup()
 {
     // Call of the base class function
     Gtk::Application::on_startup();
@@ -91,58 +91,58 @@ void MainApplication::on_startup()
     // We can use add_action()because Gtk::Application derives from Gio::ActionMap
     //File|New sub menu:
     add_action("new",
-        sigc::mem_fun(*this, &MainApplication::on_menu_file_new));
+        sigc::mem_fun(*this, &Application::on_menu_file_new));
         
     add_action("open",
-        sigc::mem_fun(*this, &MainApplication::on_menu_file_open));
+        sigc::mem_fun(*this, &Application::on_menu_file_open));
 
     add_action("save",
-        sigc::mem_fun(*this, &MainApplication::on_menu_file_save));
+        sigc::mem_fun(*this, &Application::on_menu_file_save));
         
     // File menu
-    add_action("quit", sigc::mem_fun(*this, &MainApplication::on_menu_file_quit));
+    add_action("quit", sigc::mem_fun(*this, &Application::on_menu_file_quit));
 
     // Help menu
-    add_action("about", sigc::mem_fun(*this, &MainApplication::on_menu_help_about));
+    add_action("about", sigc::mem_fun(*this, &Application::on_menu_help_about));
 
-    add_action("copy", sigc::mem_fun(*this, &MainApplication::on_menu_edit_copy));
+    add_action("copy", sigc::mem_fun(*this, &Application::on_menu_edit_copy));
 
-    add_action("paste", sigc::mem_fun(*this, &MainApplication::on_menu_edit_paste));
+    add_action("paste", sigc::mem_fun(*this, &Application::on_menu_edit_paste));
 
-    add_action("cut", sigc::mem_fun(*this, &MainApplication::on_menu_edit_cut));
+    add_action("cut", sigc::mem_fun(*this, &Application::on_menu_edit_cut));
 
-    add_action("delete", sigc::mem_fun(*this, &MainApplication::on_menu_edit_delete));
+    add_action("delete", sigc::mem_fun(*this, &Application::on_menu_edit_delete));
 
     create_menu();
 }
 
-void MainApplication::on_activate()
+void Application::on_activate()
 {
     create_window();
 }
 
-void MainApplication::on_window_hide(Gtk::Window* window)
+void Application::on_window_hide(Gtk::Window* window)
 {
     std::cout << "Deleting Window" <<std::endl;
     delete window;
 }
 
-void MainApplication::on_menu_file_new()
+void Application::on_menu_file_new()
 {
     std::cout << "A File|New Item was selected\n";
 }
 
-void MainApplication::on_menu_file_open()
+void Application::on_menu_file_open()
 {
     std::cout << "A File|Open Item was selected\n";
 }
 
-void MainApplication::on_menu_file_save()
+void Application::on_menu_file_save()
 {
     std::cout << "A File|Save Item was selected\n";
 }
 
-void MainApplication::on_menu_file_quit()
+void Application::on_menu_file_quit()
 {
     std::cout << G_STRFUNC << std::endl;
     quit();
@@ -159,27 +159,27 @@ void MainApplication::on_menu_file_quit()
         windows[0]->hide(); // In this simple case, we know there is only one window
 }
 
-void MainApplication::on_menu_edit_copy()
+void Application::on_menu_edit_copy()
 {
     std::cout << "Edit|Copy selected" << std::endl;
 }
 
-void MainApplication::on_menu_edit_paste()
+void Application::on_menu_edit_paste()
 {
     std::cout << "Edit|Paste selected" << std::endl;
 }
 
-void MainApplication::on_menu_edit_cut()
+void Application::on_menu_edit_cut()
 {
     std::cout << "Edit|Cut selected" << std::endl;
 }
 
-void MainApplication::on_menu_edit_delete()
+void Application::on_menu_edit_delete()
 {
     std::cout << "Edit|Delete selected" << std::endl;
 }
 
-void MainApplication::on_menu_help_about()
+void Application::on_menu_help_about()
 {
     std::cout << "Help|About was selected." << std::endl;
 }

@@ -4,12 +4,12 @@
 #include <gtkmm.h>
 
 
-class MainApplication : public Gtk::Application
+class Application : public Gtk::Application
 {
 public:
-    static Glib::RefPtr<MainApplication> create();
+    static Glib::RefPtr<Application> create();
 protected:
-    explicit MainApplication();
+    explicit Application();
     // override default signal handlers
     void on_startup() override;
     void on_activate(void) override;

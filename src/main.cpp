@@ -1,10 +1,10 @@
 #include <gtkmm.h>
 
-#include "MainApplication.hpp"
+#include "Application.hpp"
 
 int main(int argc, char *argv[])
 {
-    auto application = MainApplication::create();
+    auto application = Application::create();
 
     // Start the application, showing the initial window,
     // and opening extra views for any files that it is asked to open,

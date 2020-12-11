@@ -28,7 +28,7 @@ if(ENABLE_TESTING)
 endif()
 
 set(AUX_SOURCE
-    src/MainApplication.cpp
+    src/Application.cpp
     src/MainWindow.cpp
     src/DisplayWindow.cpp
 )
