@@ -3,7 +3,11 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/paned.h>
-#include <gtkmm/button.h>
+#include <gtkmm/filechooserbutton.h>
+#include <gtkmm/colorselection.h>
+#include <gtkmm/filechooserwidget.h>
+#include <gtkmm/appchooserwidget.h>
+#include <gtkmm/frame.h>
 #include "MainWindow.hpp"
 #include "DisplayWindow.hpp"
 
@@ -42,7 +46,7 @@ MainWindow::MainWindow() :
 
     Gtk::ToolButton* exitToolbarButton = new Gtk::ToolButton();
     exitToolbarButton->set_icon_name("application-exit");
-    exitToolbarButton->set_tooltip_text("New Project");
+    exitToolbarButton->set_tooltip_text("Exit Project");
     exitToolbarButton->set_visible(true);
     exitToolbarButton->set_can_focus(false);
     exitToolbarButton->set_homogeneous(true);
@@ -59,9 +63,9 @@ MainWindow::MainWindow() :
                     sigc::slot<void>(
                         sigc::mem_fun(*this, &MainWindow::on_toolbar_new_button)));
 
-    DisplayWindow* display = new DisplayWindow(Gtk::ORIENTATION_HORIZONTAL);
-    Gtk::Button* button = new Gtk::Button("Dummy button");
-    m_currentPages->append_page(*display, "Display/Paned Window");
+    DisplayWindow* display = new DisplayWindow("*New Element");
+    Gtk::FileChooserButton* button = new Gtk::FileChooserButton("FileChooser button");
+    m_currentPages->append_page(*display, display->get_label());
     display->show();
 
     m_grid.attach(*toolbar, 0, 0, 1, 1);

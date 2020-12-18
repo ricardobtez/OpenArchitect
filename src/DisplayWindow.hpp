@@ -1,12 +1,13 @@
 #ifndef DISPLAY_WINDOW_H
 #define DISPLAY_WINDOW_H
 
-#include <gtkmm/paned.h>
+#include <gtkmm/frame.h>
+#include <glibmm/ustring.h>
 
-class DisplayWindow: public Gtk::Paned
+class DisplayWindow: public Gtk::Frame
 {
 public:
-    DisplayWindow(const Gtk::Orientation orientation);
+    DisplayWindow(const Glib::ustring windowlabel);
 };
 
 #endif /* DISPLAY_WINDOW_H */
