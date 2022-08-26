@@ -51,7 +51,7 @@ if __name__ == "__main__":
         result .returncode = 69
         print("The executable was not created!")
     else:
-        result = subprocess.run(['python', 'tools/warnings.py'])
+        result = subprocess.run(['python3', 'tools/warnings.py'])
     
     if result.returncode != 0:
         print("Error when compiling the project")
